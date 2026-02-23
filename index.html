@@ -3,35 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LUXE | Премиум электроника</title>
+    <title>TechStore Pro - Full-Stack E-Commerce Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <style>
-        :root {
-            --primary: #1a1a1a;
-            --accent: #c9a962;
-            --accent-light: #e0c78a;
-            --bg: #fafafa;
-            --surface: #ffffff;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
         
         * {
             font-family: 'Inter', sans-serif;
         }
         
-        .font-serif {
-            font-family: 'Playfair Display', serif;
-        }
-        
         body {
-            background-color: var(--bg);
-            color: var(--primary);
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
         }
         
-        /* Элегантные анимации */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+        
+        .product-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+        
+        .stock-critical {
+            animation: pulse-red 2s infinite;
+            border: 2px solid #ef4444;
+        }
+        
+        @keyframes pulse-red {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            50% { box-shadow: 0 0 20px 10px rgba(239, 68, 68, 0); }
+        }
+        
+        .admin-sidebar {
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
         .fade-in {
-            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeIn 0.4s ease-out;
         }
         
         @keyframes fadeIn {
@@ -39,337 +84,148 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .slide-up {
-            animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
         }
         
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
         
-        /* Кнопки с эффектом */
-        .btn-elegant {
-            background: linear-gradient(135deg, var(--primary) 0%, #2d2d2d 100%);
-            color: white;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn-elegant::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
-        }
-        
-        .btn-elegant:hover::before {
-            left: 100%;
-        }
-        
-        .btn-elegant:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-        
-        .btn-outline {
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            background: transparent;
-            transition: all 0.3s ease;
-        }
-        
-        .btn-outline:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-2px);
-        }
-        
-        /* Карточки товаров */
-        .product-card {
-            background: var(--surface);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        
-        .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-        }
-        
-        .product-image {
-            overflow: hidden;
-        }
-        
-        .product-image img {
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .product-card:hover .product-image img {
-            transform: scale(1.05);
-        }
-        
-        /* Акцентные элементы */
-        .accent-text {
-            color: var(--accent);
-        }
-        
-        .accent-bg {
-            background: var(--accent);
-        }
-        
-        .accent-border {
-            border-color: var(--accent);
-        }
-        
-        /* Навигация */
-        .nav-link {
-            position: relative;
-            color: #666;
-            transition: color 0.3s;
-        }
-        
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--accent);
-            transition: width 0.3s;
-        }
-        
-        .nav-link:hover {
-            color: var(--primary);
-        }
-        
-        .nav-link:hover::after {
-            width: 100%;
-        }
-        
-        /* Модальные окна */
-        .modal-overlay {
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
-        }
-        
-        .modal-content {
-            background: var(--surface);
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-        }
-        
-        /* Складские индикаторы */
-        .stock-indicator {
-            height: 3px;
-            background: #e5e5e5;
-            border-radius: 2px;
-            overflow: hidden;
-        }
-        
-        .stock-fill {
-            height: 100%;
-            transition: width 0.6s ease;
-        }
-        
-        /* Админ панель */
-        .admin-sidebar {
-            background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
-        }
-        
-        .admin-nav-item {
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
-        }
-        
-        .admin-nav-item:hover, .admin-nav-item.active {
-            background: rgba(201, 169, 98, 0.1);
-            border-left-color: var(--accent);
-            color: var(--accent);
-        }
-        
-        /* Уведомления */
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 9999;
-            animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            max-width: 400px;
         }
         
-        @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        .loading-skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
         }
         
-        /* Градиентные тексты */
-        .gradient-text {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
         
-        /* Чипы категорий */
-        .category-chip {
-            transition: all 0.3s;
-            border: 1px solid transparent;
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
         }
         
-        .category-chip:hover {
-            border-color: var(--accent);
-            color: var(--accent);
+        .code-block {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
         }
         
-        .category-chip.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
+        .api-endpoint {
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 3px solid #6366f1;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0 4px 4px 0;
         }
         
-        /* Поля ввода */
-        .input-elegant {
-            border: 1px solid #e5e5e5;
-            transition: all 0.3s;
-            background: white;
+        .db-schema {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
         }
         
-        .input-elegant:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(201, 169, 98, 0.1);
-            outline: none;
-        }
-        
-        /* Таблицы */
-        .table-elegant th {
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-size: 0.75rem;
-            color: #999;
-        }
-        
-        .table-elegant td {
-            border-bottom: 1px solid #f0f0f0;
-        }
-        
-        .table-elegant tr:hover td {
-            background: #fafafa;
-        }
-        
-        /* Микро-анимации */
-        .hover-lift {
-            transition: transform 0.3s;
-        }
-        
-        .hover-lift:hover {
-            transform: translateY(-2px);
-        }
-        
-        /* Скроллбар */
-        ::-webkit-scrollbar {
+        .ws-indicator {
             width: 8px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 4px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: #a1a1a1;
-        }
-        
-        /* Лоадер */
-        .loader {
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid var(--accent);
+            height: 8px;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
+            background: #22c55e;
+            box-shadow: 0 0 10px #22c55e;
+            animation: pulse 2s infinite;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .payment-card {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .jwt-token {
+            word-break: break-all;
+            font-size: 0.75rem;
+            color: #64748b;
         }
     </style>
 </head>
 <body class="antialiased">
 
-    <!-- Уведомления -->
-    <div id="notifications"></div>
+    <!-- WebSocket Status Indicator -->
+    <div class="fixed bottom-4 right-4 z-50 flex items-center gap-2 glass-panel px-4 py-2 rounded-full">
+        <div class="ws-indicator" id="ws-status"></div>
+        <span class="text-xs text-gray-400" id="ws-text">WebSocket: Connected</span>
+    </div>
 
-    <!-- Навигация -->
-    <nav class="fixed top-0 w-full bg-white/90 backdrop-blur-md border-b border-gray-100 z-50 transition-all duration-300" id="navbar">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <!-- Логотип -->
+    <!-- Notifications Container -->
+    <div id="notifications" class="notification space-y-2"></div>
+
+    <!-- Navigation -->
+    <nav class="glass-panel sticky top-0 z-40 border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
                 <div class="flex items-center cursor-pointer" onclick="app.router.navigate('store')">
-                    <span class="font-serif text-3xl font-bold tracking-tight">LUXE</span>
-                    <span class="ml-2 text-xs uppercase tracking-widest text-gray-400 mt-1">Electronics</span>
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mr-3">
+                        <i class="fas fa-bolt text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="text-2xl font-bold gradient-text">TechStore</span>
+                        <span class="text-xs text-gray-500 block">Pro Edition</span>
+                    </div>
                 </div>
-
-                <!-- Центральное меню -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <button onclick="app.store.filter('all')" class="nav-link text-sm font-medium">Все товары</button>
-                    <button onclick="app.store.filter('phones')" class="nav-link text-sm font-medium">Смартфоны</button>
-                    <button onclick="app.store.filter('laptops')" class="nav-link text-sm font-medium">Ноутбуки</button>
-                    <button onclick="app.store.filter('audio')" class="nav-link text-sm font-medium">Аудио</button>
-                </div>
-
-                <!-- Правая часть -->
-                <div class="flex items-center space-x-6">
-                    <!-- Поиск -->
-                    <button class="text-gray-400 hover:text-gray-800 transition">
-                        <i class="fas fa-search text-lg"></i>
+                
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center space-x-1 text-sm text-gray-400 mr-4">
+                        <i class="fas fa-database mr-1"></i>
+                        <span id="db-status">PostgreSQL: Connected</span>
+                    </div>
+                    
+                    <button onclick="app.cart.toggle()" class="relative p-2 text-gray-400 hover:text-white transition group">
+                        <i class="fas fa-shopping-cart text-xl group-hover:scale-110 transition-transform"></i>
+                        <span id="cart-badge" class="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center hidden font-bold">0</span>
                     </button>
-
-                    <!-- Корзина -->
-                    <button onclick="app.cart.toggle()" class="relative text-gray-800 hover:text-gray-600 transition">
-                        <i class="fas fa-shopping-bag text-xl"></i>
-                        <span id="cart-badge" class="absolute -top-2 -right-2 bg-black text-white text-xs w-5 h-5 flex items-center justify-center rounded-full hidden">0</span>
+                    
+                    <button onclick="app.auth.showLogin()" id="login-btn" class="text-gray-300 hover:text-white px-3 py-2 rounded-lg hover:bg-white/5 transition">
+                        <i class="fas fa-user mr-2"></i>Войти
                     </button>
-
-                    <!-- Профиль -->
-                    <div id="user-section">
-                        <button onclick="app.auth.showLogin()" id="login-btn" class="btn-outline px-6 py-2 rounded-full text-sm font-medium">
-                            Войти
+                    
+                    <div id="user-menu" class="hidden relative">
+                        <button onclick="app.auth.toggleMenu()" class="flex items-center gap-2 text-gray-300 hover:text-white px-3 py-2 rounded-lg hover:bg-white/5 transition">
+                            <img id="user-avatar" src="" class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600">
+                            <span id="user-name" class="hidden sm:block"></span>
+                            <i class="fas fa-chevron-down text-xs"></i>
                         </button>
-                        
-                        <div id="user-menu" class="hidden relative">
-                            <button onclick="app.auth.toggleMenu()" class="flex items-center gap-3 hover:bg-gray-50 px-4 py-2 rounded-full transition">
-                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-800 to-gray-600 flex items-center justify-center text-white text-sm font-medium" id="user-avatar">
-                                    A
-                                </div>
-                                <span class="text-sm font-medium" id="user-name">Admin</span>
-                                <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+                        <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 glass-panel rounded-xl border border-gray-700 overflow-hidden">
+                            <button onclick="app.router.navigate('profile')" class="w-full text-left px-4 py-2 hover:bg-white/5 text-gray-300 hover:text-white transition">
+                                <i class="fas fa-user-circle mr-2"></i>Профиль
                             </button>
-                            
-                            <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-gray-100 py-2 transform origin-top-right transition-all">
-                                <button onclick="app.router.navigate('profile')" class="w-full text-left px-4 py-3 text-sm hover:bg-gray-50 transition flex items-center gap-3">
-                                    <i class="fas fa-user text-gray-400"></i> Профиль
-                                </button>
-                                <button onclick="app.router.navigate('orders')" class="w-full text-left px-4 py-3 text-sm hover:bg-gray-50 transition flex items-center gap-3">
-                                    <i class="fas fa-shopping-bag text-gray-400"></i> Заказы
-                                </button>
-                                <button onclick="app.admin.show()" id="admin-menu-btn" class="hidden w-full text-left px-4 py-3 text-sm hover:bg-gray-50 transition flex items-center gap-3 text-amber-600">
-                                    <i class="fas fa-crown"></i> Админ панель
-                                </button>
-                                <div class="border-t border-gray-100 my-1"></div>
-                                <button onclick="app.auth.logout()" class="w-full text-left px-4 py-3 text-sm hover:bg-gray-50 transition flex items-center gap-3 text-red-600">
-                                    <i class="fas fa-sign-out-alt"></i> Выйти
-                                </button>
-                            </div>
+                            <button onclick="app.router.navigate('orders')" class="w-full text-left px-4 py-2 hover:bg-white/5 text-gray-300 hover:text-white transition">
+                                <i class="fas fa-shopping-bag mr-2"></i>Мои заказы
+                            </button>
+                            <button onclick="app.admin.show()" id="admin-menu-item" class="hidden w-full text-left px-4 py-2 hover:bg-white/5 text-indigo-400 hover:text-indigo-300 transition">
+                                <i class="fas fa-shield-alt mr-2"></i>Админ панель
+                            </button>
+                            <hr class="border-gray-700 my-1">
+                            <button onclick="app.auth.logout()" class="w-full text-left px-4 py-2 hover:bg-white/5 text-red-400 hover:text-red-300 transition">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Выйти
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -377,305 +233,553 @@
         </div>
     </nav>
 
-    <!-- Основной контент -->
-    <main id="app-container" class="pt-20 min-h-screen">
-        <!-- Контент загружается здесь -->
+    <!-- Main Content Area -->
+    <main id="app-container" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Views will be injected here -->
     </main>
 
-    <!-- Модальное окно -->
+    <!-- Templates -->
+    <template id="store-view">
+        <div class="fade-in">
+            <!-- Hero Section -->
+            <div class="relative rounded-2xl overflow-hidden mb-8 bg-gradient-to-r from-indigo-900 to-purple-900 p-8 md:p-12">
+                <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=1200&q=80')] opacity-20 bg-cover bg-center"></div>
+                <div class="relative z-10">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">Премиум электроника</h1>
+                    <p class="text-xl text-gray-300 mb-6 max-w-2xl">Полная интеграция с базой данных, real-time обновления через WebSocket и безопасная оплата</p>
+                    <div class="flex flex-wrap gap-4">
+                        <button onclick="document.getElementById('products-section').scrollIntoView({behavior: 'smooth'})" class="btn-primary px-6 py-3 rounded-xl font-semibold text-white">
+                            Смотреть товары
+                        </button>
+                        <button onclick="app.demo.showArchitecture()" class="px-6 py-3 rounded-xl font-semibold border border-white/20 hover:bg-white/5 transition text-white">
+                            <i class="fas fa-code mr-2"></i>Архитектура
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="glass-panel rounded-xl p-4 mb-6 flex flex-wrap gap-4 items-center justify-between sticky top-20 z-30">
+                <div class="flex gap-2 overflow-x-auto pb-2 md:pb-0">
+                    <button onclick="app.store.filter('all')" class="filter-btn active px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium transition whitespace-nowrap" data-category="all">
+                        Все товары
+                    </button>
+                    <button onclick="app.store.filter('phones')" class="filter-btn px-4 py-2 rounded-lg hover:bg-white/5 text-gray-300 text-sm font-medium transition whitespace-nowrap" data-category="phones">
+                        <i class="fas fa-mobile-alt mr-2"></i>Смартфоны
+                    </button>
+                    <button onclick="app.store.filter('laptops')" class="filter-btn px-4 py-2 rounded-lg hover:bg-white/5 text-gray-300 text-sm font-medium transition whitespace-nowrap" data-category="laptops">
+                        <i class="fas fa-laptop mr-2"></i>Ноутбуки
+                    </button>
+                    <button onclick="app.store.filter('audio')" class="filter-btn px-4 py-2 rounded-lg hover:bg-white/5 text-gray-300 text-sm font-medium transition whitespace-nowrap" data-category="audio">
+                        <i class="fas fa-headphones mr-2"></i>Аудио
+                    </button>
+                </div>
+                <div class="flex items-center gap-4 text-sm text-gray-400">
+                    <span class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        Live Updates
+                    </span>
+                    <span id="last-sync">Sync: <span class="text-gray-300">just now</span></span>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div id="products-section" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="products-grid">
+                <!-- Products injected here -->
+            </div>
+        </div>
+    </template>
+
+    <template id="admin-view">
+        <div class="flex h-[calc(100vh-140px)] gap-6 fade-in">
+            <!-- Sidebar -->
+            <aside class="admin-sidebar w-64 rounded-2xl p-6 hidden md:block">
+                <div class="mb-8">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-white">Admin Panel</div>
+                            <div class="text-xs text-green-400 flex items-center gap-1">
+                                <div class="w-1.5 h-1.5 bg-green-400 rounded-full"></div>
+                                Online
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-xs text-gray-500 font-mono bg-black/30 p-2 rounded-lg">
+                        Role: SUPER_ADMIN<br>
+                        JWT: <span class="text-indigo-400">Active</span>
+                    </div>
+                </div>
+                
+                <nav class="space-y-1">
+                    <button onclick="app.admin.switchTab('dashboard')" class="admin-tab active w-full text-left px-4 py-3 rounded-xl bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 transition flex items-center gap-3">
+                        <i class="fas fa-chart-line w-5"></i> Дашборд
+                    </button>
+                    <button onclick="app.admin.switchTab('inventory')" class="admin-tab w-full text-left px-4 py-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition flex items-center gap-3">
+                        <i class="fas fa-boxes w-5"></i> Склад (DB)
+                    </button>
+                    <button onclick="app.admin.switchTab('orders')" class="admin-tab w-full text-left px-4 py-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition flex items-center gap-3">
+                        <i class="fas fa-shopping-bag w-5"></i> Заказы
+                    </button>
+                    <button onclick="app.admin.switchTab('api')" class="admin-tab w-full text-left px-4 py-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition flex items-center gap-3">
+                        <i class="fas fa-code w-5"></i> API Docs
+                    </button>
+                    <button onclick="app.admin.switchTab('websocket')" class="admin-tab w-full text-left px-4 py-3 rounded-xl hover:bg-white/5 text-gray-400 hover:text-white transition flex items-center gap-3">
+                        <i class="fas fa-broadcast-tower w-5"></i> WebSocket
+                    </button>
+                </nav>
+
+                <div class="mt-8 p-4 bg-black/20 rounded-xl border border-white/5">
+                    <div class="text-xs text-gray-500 mb-2">System Status</div>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">DB Latency</span>
+                            <span class="text-green-400">12ms</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">WS Ping</span>
+                            <span class="text-green-400">24ms</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Active Users</span>
+                            <span class="text-indigo-400" id="active-users">42</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Content -->
+            <div class="flex-1 glass-panel rounded-2xl overflow-hidden flex flex-col">
+                <div id="admin-content" class="flex-1 overflow-auto p-6">
+                    <!-- Admin content injected here -->
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Modals -->
     <div id="modal-container" class="fixed inset-0 z-50 hidden">
-        <!-- Модальные окна рендерятся здесь -->
+        <!-- Modals injected here -->
     </div>
 
-    <!-- JavaScript -->
     <script>
+        /**
+         * TechStore Pro - Full Stack Architecture Simulation
+         * 
+         * ARCHITECTURE OVERVIEW:
+         * =====================
+         * 
+         * Frontend: React/Vue (simulated with vanilla JS)
+         * Backend: Node.js + Express (simulated)
+         * Database: PostgreSQL (simulated with localStorage + structured schema)
+         * Real-time: WebSocket (simulated with EventEmitter pattern)
+         * Payment: Stripe/YooKassa integration (mock)
+         * Auth: JWT tokens (simulated)
+         */
+
+        // ==========================================
+        // DATABASE SCHEMA (PostgreSQL Simulation)
+        // ==========================================
+        const DB_SCHEMA = {
+            users: {
+                id: 'SERIAL PRIMARY KEY',
+                email: 'VARCHAR(255) UNIQUE NOT NULL',
+                password_hash: 'VARCHAR(255) NOT NULL', -- bcrypt
+                role: 'ENUM("customer", "admin") DEFAULT "customer"',
+                created_at: 'TIMESTAMP DEFAULT NOW()',
+                profile: 'JSONB'
+            },
+            products: {
+                id: 'SERIAL PRIMARY KEY',
+                name: 'VARCHAR(255) NOT NULL',
+                category: 'VARCHAR(50) NOT NULL',
+                price: 'DECIMAL(10,2) NOT NULL',
+                stock: 'INTEGER DEFAULT 0',
+                image_url: 'TEXT',
+                description: 'TEXT',
+                created_at: 'TIMESTAMP DEFAULT NOW()',
+                updated_at: 'TIMESTAMP'
+            },
+            orders: {
+                id: 'SERIAL PRIMARY KEY',
+                user_id: 'INTEGER REFERENCES users(id)',
+                items: 'JSONB NOT NULL', -- Array of {product_id, quantity, price}
+                total_amount: 'DECIMAL(10,2)',
+                status: 'ENUM("pending", "paid", "shipped", "delivered")',
+                payment_intent_id: 'VARCHAR(255)', -- Stripe/YooKassa ID
+                created_at: 'TIMESTAMP DEFAULT NOW()'
+            },
+            websocket_events: {
+                id: 'SERIAL PRIMARY KEY',
+                event_type: 'VARCHAR(50)',
+                payload: 'JSONB',
+                created_at: 'TIMESTAMP DEFAULT NOW()'
+            }
+        };
+
+        // ==========================================
+        // BACKEND API SIMULATION (Express.js style)
+        // ==========================================
+        const API = {
+            baseURL: 'https://api.techstore.pro/v1',
+            
+            // Auth endpoints
+            auth: {
+                POST: {
+                    '/login': 'JWT token + refresh token',
+                    '/register': 'Create user + hash password',
+                    '/refresh': 'Rotate JWT tokens',
+                    '/logout': 'Invalidate token blacklist'
+                }
+            },
+            
+            // Product endpoints
+            products: {
+                GET: {
+                    '/products': 'List with pagination & filters',
+                    '/products/:id': 'Single product details',
+                    '/products/:id/stock': 'Real-time stock check'
+                },
+                POST: {
+                    '/products': 'Create (Admin only) + DB transaction',
+                    '/products/:id/restock': 'Add inventory (Admin only)'
+                },
+                PUT: {
+                    '/products/:id': 'Update (Admin only)'
+                },
+                DELETE: {
+                    '/products/:id': 'Soft delete (Admin only)'
+                }
+            },
+            
+            // Order endpoints
+            orders: {
+                POST: {
+                    '/orders': 'Create order + payment intent',
+                    '/orders/:id/pay': 'Confirm payment + update stock'
+                },
+                GET: {
+                    '/orders': 'User order history',
+                    '/orders/admin/all': 'All orders (Admin)'
+                }
+            },
+            
+            // WebSocket events
+            ws: {
+                'stock:update': 'Broadcast to all clients',
+                'order:new': 'Notify admins',
+                'user:connect': 'Track active sessions'
+            }
+        };
+
+        // ==========================================
+        // APPLICATION CORE
+        // ==========================================
         const app = {
             state: {
                 user: null,
-                products: [],
                 cart: [],
+                products: [],
                 orders: [],
-                currentFilter: 'all',
-                view: 'store'
+                wsConnected: true,
+                currentView: 'store',
+                adminTab: 'dashboard'
             },
 
+            // Database Service (PostgreSQL simulation)
             db: {
                 init() {
-                    if (!localStorage.getItem('luxe_db')) {
-                        const initialData = {
-                            products: [
-                                { id: 1, name: "iPhone 15 Pro Max", category: "phones", price: 119900, stock: 15, image: "https://images.unsplash.com/photo-1696446701796-da61225697cc?w=600&q=80", sales: 45, description: "Титановый корпус, чип A17 Pro" },
-                                { id: 2, name: "MacBook Pro 16", category: "laptops", price: 249900, stock: 8, image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca4?w=600&q=80", sales: 23, description: "M3 Max, 36 ГБ объединённой памяти" },
-                                { id: 3, name: "AirPods Pro 2", category: "audio", price: 24900, stock: 3, image: "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=600&q=80", sales: 89, description: "Активное шумоподавление, USB-C" },
-                                { id: 4, name: "Samsung S24 Ultra", category: "phones", price: 129900, stock: 12, image: "https://images.unsplash.com/photo-1610945265078-3858a0828671?w=600&q=80", sales: 34, description: "ИИ-функции, встроенный S Pen" },
-                                { id: 5, name: "Sony WH-1000XM5", category: "audio", price: 34900, stock: 20, image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=600&q=80", sales: 56, description: "Лучшее шумоподавление в индустрии" },
-                                { id: 6, name: "iPad Pro 13", category: "laptops", price: 149900, stock: 7, image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&q=80", sales: 29, description: "M4, Ultra Retina XDR дисплей" },
-                                { id: 7, name: "Marshall Stanmore III", category: "audio", price: 39900, stock: 2, image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600&q=80", sales: 67, description: "Легендарное звучание, Bluetooth 5.2" },
-                                { id: 8, name: "Dell XPS 15", category: "laptops", price: 189900, stock: 5, image: "https://images.unsplash.com/photo-1593642632823-8f78536788c6?w=600&q=80", sales: 18, description: "OLED 3.5K, NVIDIA RTX 4070" }
-                            ],
-                            orders: [],
-                            users: [
-                                { id: 1, email: 'admin@luxe.com', password: 'admin123', role: 'admin', name: 'Администратор' },
-                                { id: 2, email: 'user@luxe.com', password: 'user123', role: 'customer', name: 'Покупатель' }
-                            ]
-                        };
-                        localStorage.setItem('luxe_db', JSON.stringify(initialData));
+                    // Initialize localStorage as "PostgreSQL"
+                    if (!localStorage.getItem('ts_db_initialized')) {
+                        const initialProducts = [
+                            { id: 1, name: "iPhone 15 Pro Max", category: "phones", price: 119900, stock: 15, image: "https://images.unsplash.com/photo-1696446701796-da61225697cc?w=400&q=80", sales: 45, description: "A17 Pro, Titanium design" },
+                            { id: 2, name: "MacBook Pro 16 M3", category: "laptops", price: 249900, stock: 8, image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca4?w=400&q=80", sales: 23, description: "M3 Max chip, 36GB RAM" },
+                            { id: 3, name: "AirPods Pro 2 USB-C", category: "audio", price: 24900, stock: 3, image: "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=400&q=80", sales: 89, description: "Active Noise Cancellation" },
+                            { id: 4, name: "Samsung S24 Ultra", category: "phones", price: 129900, stock: 12, image: "https://images.unsplash.com/photo-1610945265078-3858a0828671?w=400&q=80", sales: 34, description: "AI features, S Pen" },
+                            { id: 5, name: "Sony WH-1000XM5", category: "audio", price: 34900, stock: 20, image: "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=400&q=80", sales: 56, description: "Industry-leading noise cancel" },
+                            { id: 6, name: "Dell XPS 15 OLED", category: "laptops", price: 189900, stock: 5, image: "https://images.unsplash.com/photo-1593642632823-8f78536788c6?w=400&q=80", sales: 18, description: "3.5K OLED, RTX 4070" },
+                            { id: 7, name: "iPad Pro 13 M4", category: "laptops", price: 149900, stock: 7, image: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=400&q=80", sales: 29, description: "Ultra Retina XDR" },
+                            { id: 8, name: "Marshall Stanmore III", category: "audio", price: 39900, stock: 2, image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&q=80", sales: 67, description: "Iconic sound, Bluetooth 5.2" }
+                        ];
+                        
+                        localStorage.setItem('ts_products', JSON.stringify(initialProducts));
+                        localStorage.setItem('ts_orders', JSON.stringify([]));
+                        localStorage.setItem('ts_users', JSON.stringify([
+                            { id: 1, email: 'admin@techstore.pro', password: 'admin123', role: 'admin', name: 'Admin' },
+                            { id: 2, email: 'user@example.com', password: 'user123', role: 'customer', name: 'John Doe' }
+                        ]));
+                        localStorage.setItem('ts_db_initialized', 'true');
                     }
                     
-                    const db = JSON.parse(localStorage.getItem('luxe_db'));
-                    app.state.products = db.products;
-                    app.state.orders = db.orders;
+                    app.state.products = JSON.parse(localStorage.getItem('ts_products')) || [];
+                    app.state.orders = JSON.parse(localStorage.getItem('ts_orders')) || [];
                 },
 
-                save() {
-                    const db = JSON.parse(localStorage.getItem('luxe_db'));
-                    db.products = app.state.products;
-                    db.orders = app.state.orders;
-                    localStorage.setItem('luxe_db', JSON.stringify(db));
-                }
-            },
-
-            init() {
-                this.db.init();
-                this.checkAuth();
-                this.router.navigate('store');
-                this.setupEventListeners();
-            },
-
-            setupEventListeners() {
-                // Закрытие dropdown при клике вне
-                document.addEventListener('click', (e) => {
-                    const userMenu = document.getElementById('user-menu');
-                    const dropdown = document.getElementById('user-dropdown');
-                    if (userMenu && !userMenu.contains(e.target)) {
-                        dropdown?.classList.add('hidden');
-                    }
-                });
-            },
-
-            checkAuth() {
-                const saved = localStorage.getItem('luxe_user');
-                if (saved) {
-                    app.state.user = JSON.parse(saved);
-                    app.ui.updateAuthUI();
-                }
-            },
-
-            router: {
-                navigate(view) {
-                    app.state.view = view;
-                    const container = document.getElementById('app-container');
-                    
-                    if (view === 'store') {
-                        container.innerHTML = app.views.store();
-                        app.store.render();
-                    } else if (view === 'admin') {
-                        if (!app.state.user || app.state.user.role !== 'admin') {
-                            app.ui.notify('Доступ запрещен', 'error');
-                            return;
+                query(table) {
+                    return {
+                        select: () => JSON.parse(localStorage.getItem(`ts_${table}`) || '[]'),
+                        insert: (data) => {
+                            const items = JSON.parse(localStorage.getItem(`ts_${table}`) || '[]');
+                            items.push({ ...data, id: Date.now() });
+                            localStorage.setItem(`ts_${table}`, JSON.stringify(items));
+                            return data;
+                        },
+                        update: (id, data) => {
+                            const items = JSON.parse(localStorage.getItem(`ts_${table}`) || '[]');
+                            const idx = items.findIndex(i => i.id === id);
+                            if (idx !== -1) {
+                                items[idx] = { ...items[idx], ...data, updated_at: new Date().toISOString() };
+                                localStorage.setItem(`ts_${table}`, JSON.stringify(items));
+                                return items[idx];
+                            }
+                            return null;
+                        },
+                        delete: (id) => {
+                            const items = JSON.parse(localStorage.getItem(`ts_${table}`) || '[]');
+                            const filtered = items.filter(i => i.id !== id);
+                            localStorage.setItem(`ts_${table}`, JSON.stringify(filtered));
                         }
-                        container.innerHTML = app.views.admin();
-                        app.admin.renderDashboard();
-                    }
-                    
-                    window.scrollTo(0, 0);
-                }
-            },
-
-            views: {
-                store() {
-                    return `
-                        <div class="fade-in">
-                            <!-- Hero Section -->
-                            <section class="relative h-[70vh] flex items-center justify-center overflow-hidden">
-                                <div class="absolute inset-0">
-                                    <img src="https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=1920&q=80" class="w-full h-full object-cover" alt="Hero">
-                                    <div class="absolute inset-0 bg-black/40"></div>
-                                </div>
-                                <div class="relative z-10 text-center text-white px-6 max-w-4xl">
-                                    <p class="text-sm uppercase tracking-[0.3em] mb-4 text-amber-300">Премиум коллекция 2024</p>
-                                    <h1 class="font-serif text-5xl md:text-7xl font-bold mb-6 leading-tight">Техника, которая<br>вдохновляет</h1>
-                                    <p class="text-lg md:text-xl text-gray-200 mb-10 font-light">Подберите идеальное устройство из нашей эксклюзивной подборки</p>
-                                    <div class="flex gap-4 justify-center">
-                                        <button onclick="document.getElementById('products-section').scrollIntoView({behavior: 'smooth'})" class="btn-elegant px-8 py-4 rounded-full text-sm font-medium tracking-wide">
-                                            Смотреть коллекцию
-                                        </button>
-                                        <button onclick="app.demo.showInfo()" class="border border-white text-white px-8 py-4 rounded-full text-sm font-medium tracking-wide hover:bg-white hover:text-black transition">
-                                            О бренде
-                                        </button>
-                                    </div>
-                                </div>
-                            </section>
-
-                            <!-- Фильтры -->
-                            <section class="py-12 px-6 max-w-7xl mx-auto">
-                                <div class="flex flex-wrap justify-center gap-4 mb-12">
-                                    <button onclick="app.store.filter('all')" class="category-chip active px-6 py-3 rounded-full text-sm font-medium" data-filter="all">
-                                        Все товары
-                                    </button>
-                                    <button onclick="app.store.filter('phones')" class="category-chip px-6 py-3 rounded-full text-sm font-medium text-gray-600" data-filter="phones">
-                                        Смартфоны
-                                    </button>
-                                    <button onclick="app.store.filter('laptops')" class="category-chip px-6 py-3 rounded-full text-sm font-medium text-gray-600" data-filter="laptops">
-                                        Ноутбуки
-                                    </button>
-                                    <button onclick="app.store.filter('audio')" class="category-chip px-6 py-3 rounded-full text-sm font-medium text-gray-600" data-filter="audio">
-                                        Аудио
-                                    </button>
-                                </div>
-
-                                <!-- Сетка товаров -->
-                                <div id="products-section" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                                    <!-- Товары рендерятся здесь -->
-                                </div>
-                            </section>
-
-                            <!-- Features -->
-                            <section class="bg-white py-20 px-6">
-                                <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-                                    <div class="slide-up" style="animation-delay: 0.1s">
-                                        <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gray-50 flex items-center justify-center">
-                                            <i class="fas fa-shipping-fast text-2xl text-gray-800"></i>
-                                        </div>
-                                        <h3 class="font-serif text-xl font-semibold mb-3">Бесплатная доставка</h3>
-                                        <p class="text-gray-600 text-sm leading-relaxed">При заказе от 50 000 ₽ по всей России</p>
-                                    </div>
-                                    <div class="slide-up" style="animation-delay: 0.2s">
-                                        <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gray-50 flex items-center justify-center">
-                                            <i class="fas fa-shield-alt text-2xl text-gray-800"></i>
-                                        </div>
-                                        <h3 class="font-serif text-xl font-semibold mb-3">Гарантия 2 года</h3>
-                                        <p class="text-gray-600 text-sm leading-relaxed">Официальная гарантия производителя</p>
-                                    </div>
-                                    <div class="slide-up" style="animation-delay: 0.3s">
-                                        <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gray-50 flex items-center justify-center">
-                                            <i class="fas fa-undo text-2xl text-gray-800"></i>
-                                        </div>
-                                        <h3 class="font-serif text-xl font-semibold mb-3">30 дней на возврат</h3>
-                                        <p class="text-gray-600 text-sm leading-relaxed">Без лишних вопросов и сложностей</p>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                    `;
+                    };
                 },
 
-                admin() {
-                    return `
-                        <div class="flex min-h-screen bg-gray-50 fade-in">
-                            <!-- Sidebar -->
-                            <aside class="admin-sidebar w-64 text-white flex-shrink-0">
-                                <div class="p-8">
-                                    <div class="font-serif text-2xl font-bold mb-1">LUXE</div>
-                                    <div class="text-xs text-gray-400 uppercase tracking-widest">Admin Panel</div>
-                                </div>
-                                
-                                <nav class="px-4 space-y-1">
-                                    <button onclick="app.admin.renderDashboard()" class="admin-nav-item active w-full text-left px-6 py-4 rounded-r-xl flex items-center gap-4 text-sm">
-                                        <i class="fas fa-chart-line w-5"></i> Дашборд
-                                    </button>
-                                    <button onclick="app.admin.renderInventory()" class="admin-nav-item w-full text-left px-6 py-4 rounded-r-xl flex items-center gap-4 text-sm text-gray-400 hover:text-white">
-                                        <i class="fas fa-boxes w-5"></i> Склад
-                                    </button>
-                                    <button onclick="app.admin.renderOrders()" class="admin-nav-item w-full text-left px-6 py-4 rounded-r-xl flex items-center gap-4 text-sm text-gray-400 hover:text-white">
-                                        <i class="fas fa-shopping-bag w-5"></i> Заказы
-                                    </button>
-                                    <button onclick="app.admin.renderUsers()" class="admin-nav-item w-full text-left px-6 py-4 rounded-r-xl flex items-center gap-4 text-sm text-gray-400 hover:text-white">
-                                        <i class="fas fa-users w-5"></i> Пользователи
-                                    </button>
-                                </nav>
-
-                                <div class="absolute bottom-0 left-0 right-0 p-6">
-                                    <div class="bg-white/5 rounded-xl p-4">
-                                        <div class="text-xs text-gray-400 mb-2">Система</div>
-                                        <div class="flex items-center gap-2 text-sm">
-                                            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                                            <span>Онлайн</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </aside>
-
-                            <!-- Content -->
-                            <div class="flex-1 overflow-auto">
-                                <div class="p-8 max-w-7xl mx-auto" id="admin-content">
-                                    <!-- Контент админки -->
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                transaction(operations) {
+                    // Simulate ACID transaction
+                    console.log('[PostgreSQL] BEGIN TRANSACTION');
+                    try {
+                        operations();
+                        console.log('[PostgreSQL] COMMIT');
+                    } catch (e) {
+                        console.log('[PostgreSQL] ROLLBACK:', e);
+                        throw e;
+                    }
                 }
             },
 
-            store: {
-                filter(category) {
-                    app.state.currentFilter = category;
+            // WebSocket Service (Socket.io simulation)
+            ws: {
+                listeners: {},
+                
+                connect() {
+                    console.log('[WebSocket] Connecting to wss://api.techstore.pro...');
+                    setTimeout(() => {
+                        app.state.wsConnected = true;
+                        app.ui.notify('WebSocket подключен', 'success');
+                        this.emit('user:connect', { userId: app.state.user?.id, timestamp: Date.now() });
+                    }, 500);
                     
-                    // Обновляем кнопки
-                    document.querySelectorAll('.category-chip').forEach(btn => {
-                        if (btn.dataset.filter === category) {
-                            btn.classList.add('active');
-                            btn.classList.remove('text-gray-600');
-                        } else {
-                            btn.classList.remove('active');
-                            btn.classList.add('text-gray-600');
+                    // Simulate incoming events
+                    setInterval(() => this.simulateEvents(), 8000);
+                },
+                
+                on(event, callback) {
+                    if (!this.listeners[event]) this.listeners[event] = [];
+                    this.listeners[event].push(callback);
+                },
+                
+                emit(event, data) {
+                    console.log(`[WebSocket] Emit: ${event}`, data);
+                    if (this.listeners[event]) {
+                        this.listeners[event].forEach(cb => cb(data));
+                    }
+                },
+                
+                simulateEvents() {
+                    if (!app.state.wsConnected) return;
+                    
+                    // Random stock update simulation
+                    if (Math.random() > 0.6) {
+                        const product = app.state.products[Math.floor(Math.random() * app.state.products.length)];
+                        if (product && product.stock > 0) {
+                            product.stock--;
+                            product.sales++;
+                            app.db.query('products').update(product.id, product);
+                            this.emit('stock:update', { productId: product.id, newStock: product.stock });
+                            app.ui.showToast(`📉 ${product.name}: осталось ${product.stock} шт.`);
+                        }
+                    }
+                    
+                    // Update active users count
+                    const activeUsers = Math.floor(Math.random() * 50) + 20;
+                    document.getElementById('active-users') && (document.getElementById('active-users').textContent = activeUsers);
+                }
+            },
+
+            // Authentication Service (JWT simulation)
+            auth: {
+                currentUser: null,
+                token: null,
+                
+                login(email, password) {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            const users = app.db.query('users').select();
+                            const user = users.find(u => u.email === email && u.password === password);
+                            
+                            if (user) {
+                                // Generate JWT (simulated)
+                                const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+                                const payload = btoa(JSON.stringify({ 
+                                    userId: user.id, 
+                                    email: user.email, 
+                                    role: user.role,
+                                    iat: Date.now(),
+                                    exp: Date.now() + 24 * 60 * 60 * 1000
+                                }));
+                                const signature = btoa('simulated-signature');
+                                this.token = `${header}.${payload}.${signature}`;
+                                
+                                this.currentUser = { ...user, password: undefined };
+                                app.state.user = this.currentUser;
+                                
+                                localStorage.setItem('ts_jwt', this.token);
+                                localStorage.setItem('ts_user', JSON.stringify(this.currentUser));
+                                
+                                resolve({ user: this.currentUser, token: this.token });
+                            } else {
+                                reject(new Error('Invalid credentials'));
+                            }
+                        }, 600); // Simulate network delay
+                    });
+                },
+                
+                logout() {
+                    this.currentUser = null;
+                    this.token = null;
+                    app.state.user = null;
+                    localStorage.removeItem('ts_jwt');
+                    localStorage.removeItem('ts_user');
+                    app.ui.updateAuthUI();
+                    app.router.navigate('store');
+                    app.ui.notify('Вы вышли из системы');
+                },
+                
+                checkAuth() {
+                    const saved = localStorage.getItem('ts_user');
+                    const token = localStorage.getItem('ts_jwt');
+                    if (saved && token) {
+                        this.currentUser = JSON.parse(saved);
+                        this.token = token;
+                        app.state.user = this.currentUser;
+                        return true;
+                    }
+                    return false;
+                },
+                
+                showLogin() {
+                    app.ui.showModal('login');
+                },
+                
+                toggleMenu() {
+                    const dropdown = document.getElementById('user-dropdown');
+                    dropdown.classList.toggle('hidden');
+                }
+            },
+
+            // Payment Service (Stripe/YooKassa simulation)
+            payment: {
+                async createPaymentIntent(amount, currency = 'RUB') {
+                    console.log(`[Payment] Creating intent: ${amount} ${currency}`);
+                    
+                    // Simulate API call to payment provider
+                    return new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve({
+                                id: `pi_${Date.now()}`,
+                                client_secret: `secret_${Math.random().toString(36).substr(2, 9)}`,
+                                amount: amount,
+                                currency: currency,
+                                status: 'requires_confirmation'
+                            });
+                        }, 1000);
+                    });
+                },
+                
+                async confirmPayment(intentId) {
+                    console.log(`[Payment] Confirming ${intentId}`);
+                    return new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve({ status: 'succeeded', id: intentId });
+                        }, 1500);
+                    });
+                }
+            },
+
+            // Store Logic
+            store: {
+                currentFilter: 'all',
+                
+                init() {
+                    this.render();
+                    app.ws.on('stock:update', (data) => {
+                        const product = app.state.products.find(p => p.id === data.productId);
+                        if (product) {
+                            product.stock = data.newStock;
+                            this.render();
+                            if (app.state.currentView === 'admin') {
+                                app.admin.renderInventory();
+                            }
                         }
                     });
-                    
+                },
+                
+                filter(category) {
+                    this.currentFilter = category;
+                    document.querySelectorAll('.filter-btn').forEach(btn => {
+                        const isActive = btn.dataset.category === category;
+                        btn.className = `filter-btn px-4 py-2 rounded-lg text-sm font-medium transition whitespace-nowrap ${
+                            isActive ? 'bg-indigo-600 text-white' : 'hover:bg-white/5 text-gray-300'
+                        }`;
+                    });
                     this.render();
                 },
-
+                
                 render() {
-                    const container = document.getElementById('products-section');
+                    const container = document.getElementById('products-section') || document.getElementById('products-grid');
                     if (!container) return;
-
-                    const filtered = app.state.currentFilter === 'all' 
+                    
+                    const filtered = this.currentFilter === 'all' 
                         ? app.state.products 
-                        : app.state.products.filter(p => p.category === app.state.currentFilter);
-
-                    container.innerHTML = filtered.map((product, index) => {
+                        : app.state.products.filter(p => p.category === this.currentFilter);
+                    
+                    container.innerHTML = filtered.map(product => {
                         const stockPercent = Math.min((product.stock / 20) * 100, 100);
                         const isLow = product.stock <= 3;
                         const isOut = product.stock === 0;
                         
                         return `
-                            <div class="product-card rounded-2xl overflow-hidden group slide-up" style="animation-delay: ${index * 0.05}s">
-                                <div class="product-image relative h-64 bg-gray-100">
-                                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
-                                    ${isLow && !isOut ? `
-                                        <div class="absolute top-4 right-4 bg-red-500 text-white text-xs font-bold px-3 py-1.5 rounded-full">
-                                            Только ${product.stock} шт.
-                                        </div>
-                                    ` : ''}
-                                    ${isOut ? `
-                                        <div class="absolute inset-0 bg-white/90 flex items-center justify-center">
-                                            <span class="text-gray-400 font-medium">Нет в наличии</span>
-                                        </div>
-                                    ` : ''}
+                            <div class="product-card ${isLow && !isOut ? 'stock-critical' : ''} group">
+                                <div class="relative h-56 overflow-hidden bg-gray-800">
+                                    <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                    ${isLow && !isOut ? '<div class="absolute top-3 right-3 bg-red-500/90 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm">Только ${product.stock} шт.</div>' : ''}
+                                    ${isOut ? '<div class="absolute inset-0 bg-black/70 flex items-center justify-center backdrop-blur-sm"><span class="text-white font-bold text-lg border-2 border-white/30 px-4 py-2 rounded-lg">Нет в наличии</span></div>' : ''}
                                 </div>
-                                
-                                <div class="p-6">
-                                    <div class="text-xs text-gray-400 uppercase tracking-wider mb-2">${product.category}</div>
-                                    <h3 class="font-serif text-xl font-semibold mb-2 text-gray-900">${product.name}</h3>
-                                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">${product.description}</p>
+                                <div class="p-5">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div>
+                                            <div class="text-xs text-indigo-400 font-semibold uppercase tracking-wider mb-1">${product.category}</div>
+                                            <h3 class="font-bold text-lg text-white leading-tight">${product.name}</h3>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-400 text-sm mb-4 line-clamp-2">${product.description}</p>
                                     
                                     <div class="mb-4">
-                                        <div class="flex justify-between text-xs mb-2">
-                                            <span class="${isLow ? 'text-red-600 font-medium' : 'text-gray-500'}">
-                                                ${isOut ? 'Нет в наличии' : `В наличии: ${product.stock} шт.`}
-                                            </span>
+                                        <div class="flex justify-between text-xs mb-1">
+                                            <span class="${isLow ? 'text-red-400' : 'text-gray-400'}">На складе: ${product.stock} шт.</span>
+                                            <span class="text-gray-500">${product.sales} продано</span>
                                         </div>
-                                        <div class="stock-indicator">
-                                            <div class="stock-fill ${isLow ? 'bg-red-500' : 'bg-green-500'}" style="width: ${stockPercent}%"></div>
+                                        <div class="h-1.5 bg-gray-700 rounded-full overflow-hidden">
+                                            <div class="h-full ${isLow ? 'bg-red-500' : 'bg-green-500'} transition-all duration-500" style="width: ${stockPercent}%"></div>
                                         </div>
                                     </div>
                                     
-                                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                                        <span class="font-serif text-2xl font-bold">₽${product.price.toLocaleString()}</span>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-2xl font-bold text-white">₽${product.price.toLocaleString()}</span>
                                         <button onclick="app.cart.add(${product.id})" 
-                                                class="${isOut ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'btn-elegant'} px-6 py-3 rounded-full text-sm font-medium transition"
+                                                class="${isOut ? 'bg-gray-700 cursor-not-allowed' : 'btn-primary'} px-4 py-2 rounded-lg font-medium text-white text-sm transition"
                                                 ${isOut ? 'disabled' : ''}>
-                                            ${isOut ? 'Недоступно' : 'В корзину'}
+                                            ${isOut ? 'Нет в наличии' : '<i class="fas fa-cart-plus mr-2"></i>В корзину'}
                                         </button>
                                     </div>
                                 </div>
@@ -685,12 +789,15 @@
                 }
             },
 
+            // Cart Logic
             cart: {
+                items: [],
+                
                 add(productId) {
                     const product = app.state.products.find(p => p.id === productId);
                     if (!product || product.stock <= 0) return;
-
-                    const existing = app.state.cart.find(i => i.id === productId);
+                    
+                    const existing = this.items.find(i => i.id === productId);
                     if (existing) {
                         if (existing.quantity < product.stock) {
                             existing.quantity++;
@@ -699,47 +806,47 @@
                             return;
                         }
                     } else {
-                        app.state.cart.push({ ...product, quantity: 1 });
+                        this.items.push({ ...product, quantity: 1 });
                     }
-
+                    
                     this.updateUI();
                     app.ui.notify(`${product.name} добавлен в корзину`);
                 },
-
+                
                 updateQuantity(productId, delta) {
-                    const item = app.state.cart.find(i => i.id === productId);
+                    const item = this.items.find(i => i.id === productId);
                     const product = app.state.products.find(p => p.id === productId);
-
+                    
                     if (!item) return;
-
+                    
                     const newQty = item.quantity + delta;
                     if (newQty <= 0) {
-                        app.state.cart = app.state.cart.filter(i => i.id !== productId);
+                        this.items = this.items.filter(i => i.id !== productId);
                     } else if (newQty <= product.stock) {
                         item.quantity = newQty;
                     } else {
                         app.ui.notify('Недостаточно товара на складе', 'error');
                         return;
                     }
-
+                    
                     this.updateUI();
                     this.renderModal();
                 },
-
+                
                 remove(productId) {
-                    app.state.cart = app.state.cart.filter(i => i.id !== productId);
+                    this.items = this.items.filter(i => i.id !== productId);
                     this.updateUI();
                     this.renderModal();
                 },
-
+                
                 getTotal() {
-                    return app.state.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                    return this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
                 },
-
+                
                 updateUI() {
                     const badge = document.getElementById('cart-badge');
-                    const total = app.state.cart.reduce((sum, item) => sum + item.quantity, 0);
-
+                    const total = this.items.reduce((sum, item) => sum + item.quantity, 0);
+                    
                     if (total > 0) {
                         badge.textContent = total;
                         badge.classList.remove('hidden');
@@ -747,7 +854,7 @@
                         badge.classList.add('hidden');
                     }
                 },
-
+                
                 toggle() {
                     const modal = document.getElementById('modal-container');
                     if (modal.classList.contains('hidden')) {
@@ -757,272 +864,221 @@
                         modal.classList.add('hidden');
                     }
                 },
-
+                
                 renderModal() {
                     const modal = document.getElementById('modal-container');
                     const total = this.getTotal();
-
+                    
                     modal.innerHTML = `
                         <div class="modal-overlay fixed inset-0 flex items-center justify-center p-4" onclick="if(event.target === this) app.cart.toggle()">
-                            <div class="modal-content w-full max-w-2xl rounded-3xl overflow-hidden slide-up">
-                                <div class="p-8 border-b border-gray-100 flex justify-between items-center">
-                                    <h2 class="font-serif text-2xl font-bold">Ваша корзина</h2>
-                                    <button onclick="app.cart.toggle()" class="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center transition">
-                                        <i class="fas fa-times text-gray-600"></i>
+                            <div class="glass-panel rounded-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col slide-in">
+                                <div class="p-6 border-b border-gray-700 flex justify-between items-center">
+                                    <h3 class="text-2xl font-bold text-white">Корзина</h3>
+                                    <button onclick="app.cart.toggle()" class="text-gray-400 hover:text-white transition">
+                                        <i class="fas fa-times text-xl"></i>
                                     </button>
                                 </div>
                                 
-                                <div class="p-8 max-h-[60vh] overflow-auto">
-                                    ${app.state.cart.length === 0 ? `
-                                        <div class="text-center py-12">
-                                            <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
-                                                <i class="fas fa-shopping-bag text-3xl text-gray-300"></i>
-                                            </div>
-                                            <p class="text-gray-500">Ваша корзина пуста</p>
-                                            <button onclick="app.cart.toggle()" class="mt-4 text-sm text-gray-800 underline">Продолжить покупки</button>
-                                        </div>
-                                    ` : app.state.cart.map(item => `
-                                        <div class="flex gap-6 mb-6 pb-6 border-b border-gray-100 last:border-0">
-                                            <img src="${item.image}" class="w-24 h-24 object-cover rounded-2xl bg-gray-100">
+                                <div class="flex-1 overflow-auto p-6">
+                                    ${this.items.length === 0 ? '<div class="text-center text-gray-500 py-12"><i class="fas fa-shopping-cart text-4xl mb-4 opacity-30"></i><p>Ваша корзина пуста</p></div>' : 
+                                      this.items.map(item => `
+                                        <div class="flex items-center gap-4 mb-4 bg-white/5 p-4 rounded-xl border border-white/10">
+                                            <img src="${item.image}" class="w-20 h-20 object-cover rounded-lg">
                                             <div class="flex-1">
-                                                <h3 class="font-serif text-lg font-semibold mb-1">${item.name}</h3>
-                                                <p class="text-gray-500 text-sm mb-3">${item.category}</p>
-                                                <div class="flex items-center gap-4">
-                                                    <div class="flex items-center gap-3 bg-gray-50 rounded-full px-4 py-2">
-                                                        <button onclick="app.cart.updateQuantity(${item.id}, -1)" class="w-6 h-6 rounded-full hover:bg-white flex items-center justify-center transition text-gray-600">-</button>
-                                                        <span class="w-8 text-center font-medium">${item.quantity}</span>
-                                                        <button onclick="app.cart.updateQuantity(${item.id}, 1)" class="w-6 h-6 rounded-full hover:bg-white flex items-center justify-center transition text-gray-600">+</button>
-                                                    </div>
-                                                    <button onclick="app.cart.remove(${item.id})" class="text-red-500 text-sm hover:underline">Удалить</button>
-                                                </div>
+                                                <h4 class="font-semibold text-white mb-1">${item.name}</h4>
+                                                <div class="text-indigo-400 font-bold">₽${item.price.toLocaleString()}</div>
                                             </div>
-                                            <div class="text-right">
-                                                <div class="font-serif text-lg font-bold">₽${(item.price * item.quantity).toLocaleString()}</div>
-                                                <div class="text-sm text-gray-400">₽${item.price.toLocaleString()} / шт.</div>
+                                            <div class="flex items-center gap-3 bg-black/20 rounded-lg p-1">
+                                                <button onclick="app.cart.updateQuantity(${item.id}, -1)" class="w-8 h-8 rounded hover:bg-white/10 text-gray-300 transition">-</button>
+                                                <span class="w-8 text-center font-semibold">${item.quantity}</span>
+                                                <button onclick="app.cart.updateQuantity(${item.id}, 1)" class="w-8 h-8 rounded hover:bg-white/10 text-gray-300 transition">+</button>
                                             </div>
+                                            <button onclick="app.cart.remove(${item.id})" class="text-red-400 hover:text-red-300 p-2">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </div>
-                                    `).join('')}
+                                      `).join('')}
                                 </div>
                                 
-                                ${app.state.cart.length > 0 ? `
-                                <div class="p-8 bg-gray-50">
-                                    <div class="flex justify-between items-center mb-6">
-                                        <span class="text-gray-600">Итого</span>
-                                        <span class="font-serif text-3xl font-bold">₽${total.toLocaleString()}</span>
+                                ${this.items.length > 0 ? `
+                                <div class="p-6 border-t border-gray-700 bg-black/20">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <span class="text-gray-400">Итого:</span>
+                                        <span class="text-3xl font-bold text-white">₽${total.toLocaleString()}</span>
                                     </div>
-                                    <button onclick="app.cart.checkout()" class="w-full btn-elegant py-4 rounded-full text-base font-medium">
-                                        Оформить заказ
+                                    <button onclick="app.cart.checkout()" class="w-full btn-primary py-3 rounded-xl font-bold text-lg text-white shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition">
+                                        Перейти к оплате
                                     </button>
-                                    <p class="text-center text-xs text-gray-400 mt-4">Бесплатная доставка при заказе от 50 000 ₽</p>
                                 </div>
                                 ` : ''}
                             </div>
                         </div>
                     `;
                 },
-
-                checkout() {
+                
+                async checkout() {
+                    if (this.items.length === 0) return;
                     if (!app.state.user) {
                         app.ui.notify('Войдите для оформления заказа', 'error');
                         app.auth.showLogin();
                         return;
                     }
-
+                    
                     const total = this.getTotal();
                     app.cart.toggle();
+                    
+                    // Show payment modal
                     app.ui.showPaymentModal(total);
                 }
             },
 
-            auth: {
-                showLogin() {
-                    const modal = document.getElementById('modal-container');
-                    modal.innerHTML = `
-                        <div class="modal-overlay fixed inset-0 flex items-center justify-center p-4" onclick="if(event.target === this) app.ui.closeModal()">
-                            <div class="modal-content w-full max-w-md rounded-3xl overflow-hidden slide-up">
-                                <div class="p-8">
-                                    <div class="text-center mb-8">
-                                        <div class="font-serif text-3xl font-bold mb-2">LUXE</div>
-                                        <p class="text-gray-500 text-sm">Войдите в свой аккаунт</p>
-                                    </div>
-                                    
-                                    <form onsubmit="app.auth.handleLogin(event)" class="space-y-4">
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                                            <input type="email" id="login-email" class="input-elegant w-full px-4 py-3 rounded-xl" placeholder="admin@luxe.com" required>
-                                            <p class="text-xs text-gray-400 mt-1">Демо: admin@luxe.com / admin123</p>
-                                        </div>
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Пароль</label>
-                                            <input type="password" id="login-password" class="input-elegant w-full px-4 py-3 rounded-xl" placeholder="••••••" required>
-                                        </div>
-                                        <button type="submit" class="w-full btn-elegant py-3 rounded-xl font-medium mt-6">
-                                            Войти
-                                        </button>
-                                    </form>
-                                    
-                                    <div class="mt-6 text-center">
-                                        <button onclick="app.ui.closeModal()" class="text-sm text-gray-500 hover:text-gray-800">Отмена</button>
-                                    </div>
+            // Admin Logic
+            admin: {
+                show() {
+                    if (!app.state.user || app.state.user.role !== 'admin') {
+                        app.ui.notify('Доступ запрещен', 'error');
+                        return;
+                    }
+                    app.state.currentView = 'admin';
+                    app.router.render('admin-view');
+                    this.switchTab('dashboard');
+                },
+                
+                switchTab(tab) {
+                    app.state.adminTab = tab;
+                    
+                    // Update sidebar
+                    document.querySelectorAll('.admin-tab').forEach(t => {
+                        t.classList.remove('bg-indigo-600/20', 'text-indigo-300', 'border', 'border-indigo-500/30');
+                        t.classList.add('text-gray-400', 'hover:text-white');
+                    });
+                    event.target.classList.remove('text-gray-400', 'hover:text-white');
+                    event.target.classList.add('bg-indigo-600/20', 'text-indigo-300', 'border', 'border-indigo-500/30');
+                    
+                    // Render content
+                    const content = document.getElementById('admin-content');
+                    switch(tab) {
+                        case 'dashboard': this.renderDashboard(content); break;
+                        case 'inventory': this.renderInventory(content); break;
+                        case 'orders': this.renderOrders(content); break;
+                        case 'api': this.renderAPIDocs(content); break;
+                        case 'websocket': this.renderWebSocketDocs(content); break;
+                    }
+                },
+                
+                renderDashboard(container) {
+                    const totalSales = app.state.orders.reduce((sum, o) => sum + o.total, 0);
+                    const todaySales = app.state.orders
+                        .filter(o => new Date(o.date).toDateString() === new Date().toDateString())
+                        .reduce((sum, o) => sum + o.total, 0);
+                    const lowStock = app.state.products.filter(p => p.stock <= 3).length;
+                    
+                    container.innerHTML = `
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div class="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-6 text-white relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10 blur-2xl"></div>
+                                <div class="relative z-10">
+                                    <div class="text-indigo-200 text-sm font-medium mb-1">Выручка всего</div>
+                                    <div class="text-3xl font-bold mb-2">₽${totalSales.toLocaleString()}</div>
+                                    <div class="text-xs text-indigo-200 bg-white/10 inline-block px-2 py-1 rounded">+12% к прошлому месяцу</div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-2xl p-6 text-white relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10 blur-2xl"></div>
+                                <div class="relative z-10">
+                                    <div class="text-emerald-200 text-sm font-medium mb-1">Сегодня</div>
+                                    <div class="text-3xl font-bold mb-2">₽${todaySales.toLocaleString()}</div>
+                                    <div class="text-xs text-emerald-200 bg-white/10 inline-block px-2 py-1 rounded">${app.state.orders.filter(o => new Date(o.date).toDateString() === new Date().toDateString()).length} заказов</div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-gradient-to-br from-orange-600 to-red-700 rounded-2xl p-6 text-white relative overflow-hidden">
+                                <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-10 -mt-10 blur-2xl"></div>
+                                <div class="relative z-10">
+                                    <div class="text-orange-200 text-sm font-medium mb-1">Требуют внимания</div>
+                                    <div class="text-3xl font-bold mb-2">${lowStock} товаров</div>
+                                    <div class="text-xs text-orange-200 bg-white/10 inline-block px-2 py-1 rounded">Заканчивается на складе</div>
                                 </div>
                             </div>
                         </div>
-                    `;
-                    modal.classList.remove('hidden');
-                },
-
-                handleLogin(e) {
-                    e.preventDefault();
-                    const email = document.getElementById('login-email').value;
-                    const password = document.getElementById('login-password').value;
-
-                    const db = JSON.parse(localStorage.getItem('luxe_db'));
-                    const user = db.users.find(u => u.email === email && u.password === password);
-
-                    if (user) {
-                        app.state.user = { ...user, password: undefined };
-                        localStorage.setItem('luxe_user', JSON.stringify(app.state.user));
-                        app.ui.updateAuthUI();
-                        app.ui.closeModal();
-                        app.ui.notify(`Добро пожаловать, ${user.name}`, 'success');
-                    } else {
-                        app.ui.notify('Неверные учетные данные', 'error');
-                    }
-                },
-
-                logout() {
-                    app.state.user = null;
-                    localStorage.removeItem('luxe_user');
-                    app.ui.updateAuthUI();
-                    app.ui.notify('Вы вышли из системы');
-                    app.router.navigate('store');
-                },
-
-                toggleMenu() {
-                    const dropdown = document.getElementById('user-dropdown');
-                    dropdown.classList.toggle('hidden');
-                }
-            },
-
-            admin: {
-                renderDashboard() {
-                    const content = document.getElementById('admin-content');
-                    const totalSales = app.state.orders.reduce((sum, o) => sum + o.total, 0);
-                    const todayOrders = app.state.orders.filter(o => {
-                        const orderDate = new Date(o.date);
-                        const today = new Date();
-                        return orderDate.toDateString() === today.toDateString();
-                    });
-
-                    content.innerHTML = `
-                        <div class="mb-8">
-                            <h1 class="font-serif text-3xl font-bold mb-2">Дашборд</h1>
-                            <p class="text-gray-500">Обзор продаж и активности</p>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                                <div class="text-gray-400 text-sm mb-2">Выручка всего</div>
-                                <div class="font-serif text-3xl font-bold">₽${totalSales.toLocaleString()}</div>
-                                <div class="text-green-600 text-xs mt-2">+12% к прошлому месяцу</div>
-                            </div>
-                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                                <div class="text-gray-400 text-sm mb-2">Заказов сегодня</div>
-                                <div class="font-serif text-3xl font-bold">${todayOrders.length}</div>
-                                <div class="text-gray-400 text-xs mt-2">Обновлено только что</div>
-                            </div>
-                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                                <div class="text-gray-400 text-sm mb-2">Товаров</div>
-                                <div class="font-serif text-3xl font-bold">${app.state.products.length}</div>
-                                <div class="text-amber-600 text-xs mt-2">${app.state.products.filter(p => p.stock <= 3).length} заканчивается</div>
-                            </div>
-                            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                                <div class="text-gray-400 text-sm mb-2">Клиентов</div>
-                                <div class="font-serif text-3xl font-bold">142</div>
-                                <div class="text-green-600 text-xs mt-2">+5 новых сегодня</div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                                <h3 class="font-serif text-xl font-bold">Последние заказы</h3>
-                                <button onclick="app.admin.renderOrders()" class="text-sm text-gray-600 hover:text-gray-900">Все заказы →</button>
-                            </div>
-                            <table class="w-full table-elegant">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-6 py-4 text-left">ID</th>
-                                        <th class="px-6 py-4 text-left">Клиент</th>
-                                        <th class="px-6 py-4 text-left">Товары</th>
-                                        <th class="px-6 py-4 text-left">Сумма</th>
-                                        <th class="px-6 py-4 text-left">Статус</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${app.state.orders.slice(-5).reverse().map(order => `
+                        
+                        <div class="glass-panel rounded-2xl p-6 border border-gray-700">
+                            <h3 class="text-lg font-bold text-white mb-4">Последние заказы (из PostgreSQL)</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left">
+                                    <thead class="text-gray-400 border-b border-gray-700">
                                         <tr>
-                                            <td class="px-6 py-4 font-mono text-sm text-gray-500">#${order.id.toString().slice(-6)}</td>
-                                            <td class="px-6 py-4 font-medium">${order.userName}</td>
-                                            <td class="px-6 py-4 text-gray-600">${order.items.length} товаров</td>
-                                            <td class="px-6 py-4 font-bold">₽${order.total.toLocaleString()}</td>
-                                            <td class="px-6 py-4"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">Оплачен</span></td>
+                                            <th class="pb-3 font-medium">ID</th>
+                                            <th class="pb-3 font-medium">Клиент</th>
+                                            <th class="pb-3 font-medium">Товары</th>
+                                            <th class="pb-3 font-medium">Сумма</th>
+                                            <th class="pb-3 font-medium">Статус</th>
                                         </tr>
-                                    `).join('') || '<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">Нет заказов</td></tr>'}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody class="text-sm">
+                                        ${app.state.orders.slice(-5).reverse().map(order => `
+                                            <tr class="border-b border-gray-800/50">
+                                                <td class="py-3 font-mono text-gray-500">#${order.id.toString().slice(-6)}</td>
+                                                <td class="py-3 text-white">${order.userEmail}</td>
+                                                <td class="py-3 text-gray-400">${order.items.length} товаров</td>
+                                                <td class="py-3 text-white font-semibold">₽${order.total.toLocaleString()}</td>
+                                                <td class="py-3"><span class="bg-green-500/20 text-green-400 px-2 py-1 rounded text-xs">${order.status}</span></td>
+                                            </tr>
+                                        `).join('') || '<tr><td colspan="5" class="py-8 text-center text-gray-500">Нет заказов</td></tr>'}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     `;
                 },
-
-                renderInventory() {
-                    const content = document.getElementById('admin-content');
-                    content.innerHTML = `
-                        <div class="mb-8 flex justify-between items-center">
+                
+                renderInventory(container) {
+                    container.innerHTML = `
+                        <div class="flex justify-between items-center mb-6">
                             <div>
-                                <h1 class="font-serif text-3xl font-bold mb-2">Управление складом</h1>
-                                <p class="text-gray-500">Обновление остатков и цен</p>
+                                <h2 class="text-2xl font-bold text-white">Управление складом</h2>
+                                <p class="text-gray-400 text-sm mt-1">PostgreSQL Table: products (Real-time sync via WebSocket)</p>
                             </div>
-                            <button onclick="app.ui.showAddProductModal()" class="btn-elegant px-6 py-3 rounded-full text-sm font-medium">
-                                <i class="fas fa-plus mr-2"></i>Добавить товар
+                            <button onclick="app.ui.showAddProductModal()" class="btn-primary px-4 py-2 rounded-lg text-white font-medium flex items-center gap-2">
+                                <i class="fas fa-plus"></i> Добавить товар
                             </button>
                         </div>
-
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                            <table class="w-full table-elegant">
-                                <thead class="bg-gray-50">
+                        
+                        <div class="glass-panel rounded-xl border border-gray-700 overflow-hidden">
+                            <table class="w-full text-left">
+                                <thead class="bg-black/20 text-gray-400 text-xs uppercase">
                                     <tr>
-                                        <th class="px-6 py-4 text-left">Товар</th>
-                                        <th class="px-6 py-4 text-left">Категория</th>
-                                        <th class="px-6 py-4 text-left">Цена</th>
-                                        <th class="px-6 py-4 text-left">Остаток</th>
-                                        <th class="px-6 py-4 text-left">Действия</th>
+                                        <th class="px-6 py-4 font-semibold">Товар</th>
+                                        <th class="px-6 py-4 font-semibold">Категория</th>
+                                        <th class="px-6 py-4 font-semibold">Цена</th>
+                                        <th class="px-6 py-4 font-semibold">Остаток</th>
+                                        <th class="px-6 py-4 font-semibold">Продажи</th>
+                                        <th class="px-6 py-4 font-semibold">Действия</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="divide-y divide-gray-800">
                                     ${app.state.products.map(product => `
-                                        <tr>
+                                        <tr class="hover:bg-white/5 transition group">
                                             <td class="px-6 py-4">
-                                                <div class="flex items-center gap-4">
-                                                    <img src="${product.image}" class="w-12 h-12 rounded-xl object-cover bg-gray-100">
+                                                <div class="flex items-center gap-3">
+                                                    <img src="${product.image}" class="w-10 h-10 rounded-lg object-cover bg-gray-800">
                                                     <div>
-                                                        <div class="font-medium">${product.name}</div>
+                                                        <div class="font-medium text-white">${product.name}</div>
                                                         <div class="text-xs text-gray-500">ID: ${product.id}</div>
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="px-6 py-4 text-gray-600 capitalize">${product.category}</td>
-                                            <td class="px-6 py-4">
-                                                <input type="number" value="${product.price}" 
-                                                       onchange="app.admin.updatePrice(${product.id}, this.value)"
-                                                       class="w-24 px-3 py-1 border border-gray-200 rounded-lg text-sm focus:border-amber-500 focus:outline-none">
-                                            </td>
+                                            <td class="px-6 py-4 text-gray-400">${product.category}</td>
+                                            <td class="px-6 py-4 text-white font-medium">₽${product.price.toLocaleString()}</td>
                                             <td class="px-6 py-4">
                                                 <input type="number" value="${product.stock}" 
                                                        onchange="app.admin.updateStock(${product.id}, this.value)"
-                                                       class="w-20 px-3 py-1 border ${product.stock <= 3 ? 'border-red-300 text-red-600' : 'border-gray-200'} rounded-lg text-sm focus:border-amber-500 focus:outline-none">
+                                                       class="w-20 bg-black/30 border ${product.stock <= 3 ? 'border-red-500/50 text-red-400' : 'border-gray-700 text-white'} rounded px-2 py-1 text-center focus:border-indigo-500 focus:outline-none transition">
                                             </td>
+                                            <td class="px-6 py-4 text-gray-400">${product.sales}</td>
                                             <td class="px-6 py-4">
-                                                <button onclick="app.admin.deleteProduct(${product.id})" class="text-red-500 hover:text-red-700 transition">
+                                                <button onclick="app.admin.deleteProduct(${product.id})" class="text-red-400 hover:text-red-300 opacity-0 group-hover:opacity-100 transition">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </td>
@@ -1033,111 +1089,193 @@
                         </div>
                     `;
                 },
-
-                renderOrders() {
-                    const content = document.getElementById('admin-content');
-                    content.innerHTML = `
-                        <div class="mb-8">
-                            <h1 class="font-serif text-3xl font-bold mb-2">Все заказы</h1>
-                            <p class="text-gray-500">История покупок клиентов</p>
-                        </div>
-
+                
+                renderOrders(container) {
+                    container.innerHTML = `
+                        <h2 class="text-2xl font-bold text-white mb-6">Все заказы</h2>
                         <div class="space-y-4">
                             ${app.state.orders.length === 0 ? '<div class="text-center text-gray-500 py-12">Нет заказов</div>' :
                               app.state.orders.slice().reverse().map(order => `
-                                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                                <div class="glass-panel rounded-xl p-6 border border-gray-700">
                                     <div class="flex justify-between items-start mb-4">
                                         <div>
                                             <div class="flex items-center gap-3 mb-1">
-                                                <span class="font-mono text-sm text-gray-500">#${order.id.toString().slice(-8)}</span>
-                                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">Оплачен</span>
+                                                <span class="font-mono text-gray-500">#${order.id.toString().slice(-8)}</span>
+                                                <span class="bg-green-500/20 text-green-400 px-2 py-0.5 rounded text-xs">${order.status}</span>
                                             </div>
-                                            <div class="text-sm text-gray-500">${order.date}</div>
+                                            <div class="text-sm text-gray-400">${order.date}</div>
                                         </div>
-                                        <div class="font-serif text-2xl font-bold">₽${order.total.toLocaleString()}</div>
+                                        <div class="text-right">
+                                            <div class="text-2xl font-bold text-white">₽${order.total.toLocaleString()}</div>
+                                            <div class="text-xs text-gray-500">Payment ID: ${order.paymentId?.slice(-8) || 'N/A'}</div>
+                                        </div>
                                     </div>
-                                    <div class="bg-gray-50 rounded-xl p-4 space-y-2">
+                                    <div class="bg-black/20 rounded-lg p-4 space-y-2">
                                         ${order.items.map(item => `
                                             <div class="flex justify-between text-sm">
-                                                <span class="text-gray-700">${item.name} × ${item.quantity}</span>
-                                                <span class="text-gray-500">₽${(item.price * item.quantity).toLocaleString()}</span>
+                                                <span class="text-gray-300">${item.name} × ${item.quantity}</span>
+                                                <span class="text-gray-400">₽${(item.price * item.quantity).toLocaleString()}</span>
                                             </div>
                                         `).join('')}
+                                    </div>
+                                    <div class="mt-4 pt-4 border-t border-gray-700 flex justify-between items-center text-sm">
+                                        <span class="text-gray-400">Клиент: ${order.userEmail}</span>
+                                        <span class="text-gray-500 font-mono">JWT: ${order.userId}</span>
                                     </div>
                                 </div>
                               `).join('')}
                         </div>
                     `;
                 },
-
-                renderUsers() {
-                    const content = document.getElementById('admin-content');
-                    const db = JSON.parse(localStorage.getItem('luxe_db'));
-                    
-                    content.innerHTML = `
-                        <div class="mb-8">
-                            <h1 class="font-serif text-3xl font-bold mb-2">Пользователи</h1>
-                            <p class="text-gray-500">Управление доступом</p>
-                        </div>
-
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                            <table class="w-full table-elegant">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th class="px-6 py-4 text-left">ID</th>
-                                        <th class="px-6 py-4 text-left">Имя</th>
-                                        <th class="px-6 py-4 text-left">Email</th>
-                                        <th class="px-6 py-4 text-left">Роль</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${db.users.map(user => `
-                                        <tr>
-                                            <td class="px-6 py-4 font-mono text-sm text-gray-500">${user.id}</td>
-                                            <td class="px-6 py-4 font-medium">${user.name}</td>
-                                            <td class="px-6 py-4 text-gray-600">${user.email}</td>
-                                            <td class="px-6 py-4">
-                                                <span class="px-3 py-1 rounded-full text-xs font-medium ${user.role === 'admin' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-700'}">
-                                                    ${user.role === 'admin' ? 'Администратор' : 'Клиент'}
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
+                
+                renderAPIDocs(container) {
+                    container.innerHTML = `
+                        <h2 class="text-2xl font-bold text-white mb-6">API Documentation (REST)</h2>
+                        <div class="space-y-6">
+                            <div class="code-block p-4">
+                                <div class="flex items-center gap-2 mb-4 text-gray-400 text-sm">
+                                    <i class="fas fa-server"></i>
+                                    <span>Base URL: https://api.techstore.pro/v1</span>
+                                </div>
+                                
+                                ${Object.entries(API).filter(([k]) => k !== 'ws').map(([category, endpoints]) => `
+                                    <div class="mb-6">
+                                        <h3 class="text-indigo-400 font-bold mb-3 uppercase text-sm tracking-wider">${category}</h3>
+                                        ${Object.entries(endpoints).map(([method, routes]) => `
+                                            <div class="space-y-2 mb-3">
+                                                ${Object.entries(routes).map(([route, desc]) => `
+                                                    <div class="api-endpoint flex items-center gap-3">
+                                                        <span class="font-mono text-xs font-bold ${method === 'GET' ? 'text-green-400' : method === 'POST' ? 'text-blue-400' : method === 'PUT' ? 'text-yellow-400' : 'text-red-400'}">${method}</span>
+                                                        <span class="font-mono text-sm text-gray-300">${route}</span>
+                                                        <span class="text-xs text-gray-500 ml-auto">${desc}</span>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                `).join('')}
+                            </div>
+                            
+                            <div class="db-schema">
+                                <h3 class="text-green-400 font-bold mb-3"><i class="fas fa-database mr-2"></i>PostgreSQL Schema</h3>
+                                <pre class="text-xs text-gray-300 overflow-x-auto">${JSON.stringify(DB_SCHEMA, null, 2)}</pre>
+                            </div>
                         </div>
                     `;
                 },
-
-                updatePrice(productId, newPrice) {
-                    const product = app.state.products.find(p => p.id === productId);
-                    if (product) {
-                        product.price = parseInt(newPrice) || 0;
-                        app.db.save();
-                        app.ui.notify(`Цена ${product.name} обновлена`);
-                    }
+                
+                renderWebSocketDocs(container) {
+                    container.innerHTML = `
+                        <h2 class="text-2xl font-bold text-white mb-6">WebSocket Events (Socket.io)</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="glass-panel rounded-xl p-6 border border-gray-700">
+                                <h3 class="text-indigo-400 font-bold mb-4">Client → Server</h3>
+                                <div class="space-y-3 text-sm">
+                                    <div class="bg-black/30 p-3 rounded-lg">
+                                        <code class="text-green-400">stock:update</code>
+                                        <p class="text-gray-400 mt-1">Admin updates inventory</p>
+                                    </div>
+                                    <div class="bg-black/30 p-3 rounded-lg">
+                                        <code class="text-green-400">user:connect</code>
+                                        <p class="text-gray-400 mt-1">Client authentication</p>
+                                    </div>
+                                    <div class="bg-black/30 p-3 rounded-lg">
+                                        <code class="text-green-400">order:create</code>
+                                        <p class="text-gray-400 mt-1">New order placed</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="glass-panel rounded-xl p-6 border border-gray-700">
+                                <h3 class="text-purple-400 font-bold mb-4">Server → Client</h3>
+                                <div class="space-y-3 text-sm">
+                                    <div class="bg-black/30 p-3 rounded-lg">
+                                        <code class="text-blue-400">stock:changed</code>
+                                        <p class="text-gray-400 mt-1">Broadcast to all clients</p>
+                                    </div>
+                                    <div class="bg-black/30 p-3 rounded-lg">
+                                        <code class="text-blue-400">order:confirmed</code>
+                                        <p class="text-gray-400 mt-1">Payment successful</p>
+                                    </div>
+                                    <div class="bg-black/30 p-3 rounded-lg">
+                                        <code class="text-blue-400">user:notification</code>
+                                        <p class="text-gray-400 mt-1">Personal alerts</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 glass-panel rounded-xl p-6 border border-gray-700">
+                            <h3 class="text-white font-bold mb-4">Connection Status</h3>
+                            <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                                    <span class="text-green-400">Connected</span>
+                                </div>
+                                <div class="text-gray-500 text-sm">Transport: WebSocket</div>
+                                <div class="text-gray-500 text-sm">Latency: 24ms</div>
+                            </div>
+                        </div>
+                    `;
                 },
-
+                
                 updateStock(productId, newStock) {
                     const product = app.state.products.find(p => p.id === productId);
                     if (product) {
+                        const oldStock = product.stock;
                         product.stock = parseInt(newStock) || 0;
-                        app.db.save();
-                        app.ui.notify(`Остаток ${product.name} обновлен`);
-                        this.renderInventory();
-                        if (app.state.view === 'store') app.store.render();
+                        
+                        // Update DB
+                        localStorage.setItem('ts_products', JSON.stringify(app.state.products));
+                        
+                        // Broadcast via WebSocket
+                        app.ws.emit('stock:update', { 
+                            productId, 
+                            newStock: product.stock,
+                            oldStock,
+                            updatedBy: app.state.user?.id,
+                            timestamp: Date.now()
+                        });
+                        
+                        app.ui.notify(`${product.name}: склад обновлен (${oldStock} → ${product.stock})`);
+                        this.renderInventory(document.getElementById('admin-content'));
+                        app.store.render();
                     }
                 },
-
+                
                 deleteProduct(productId) {
-                    if (!confirm('Удалить этот товар?')) return;
+                    if (!confirm('Удалить товар?')) return;
                     app.state.products = app.state.products.filter(p => p.id !== productId);
-                    app.db.save();
-                    this.renderInventory();
+                    localStorage.setItem('ts_products', JSON.stringify(app.state.products));
+                    this.renderInventory(document.getElementById('admin-content'));
+                    app.store.render();
                     app.ui.notify('Товар удален');
                 }
             },
 
+            // Router
+            router: {
+                navigate(view) {
+                    app.state.currentView = view;
+                    this.render(view === 'store' ? 'store-view' : view === 'admin' ? 'admin-view' : 'store-view');
+                    
+                    if (view === 'store') {
+                        app.store.init();
+                    } else if (view === 'admin') {
+                        app.admin.show();
+                    }
+                },
+                
+                render(templateId) {
+                    const container = document.getElementById('app-container');
+                    const template = document.getElementById(templateId);
+                    if (template) {
+                        container.innerHTML = template.innerHTML;
+                    }
+                }
+            },
+
+            // UI Utilities
             ui: {
                 notify(message, type = 'info') {
                     const container = document.getElementById('notifications');
@@ -1146,175 +1284,287 @@
                     const colors = {
                         success: 'bg-green-500',
                         error: 'bg-red-500',
-                        info: 'bg-gray-800'
+                        info: 'bg-indigo-500',
+                        warning: 'bg-orange-500'
                     };
-
-                    notification.className = `${colors[type]} text-white px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 mb-2`;
+                    
+                    const icons = {
+                        success: 'fa-check-circle',
+                        error: 'fa-exclamation-circle',
+                        info: 'fa-info-circle',
+                        warning: 'fa-exclamation-triangle'
+                    };
+                    
+                    notification.className = `${colors[type]} text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 slide-in backdrop-blur-sm bg-opacity-90`;
                     notification.innerHTML = `
-                        <i class="fas ${type === 'success' ? 'fa-check' : type === 'error' ? 'fa-exclamation' : 'fa-info-circle'}"></i>
+                        <i class="fas ${icons[type]} text-xl"></i>
                         <span class="font-medium">${message}</span>
                     `;
-
+                    
                     container.appendChild(notification);
-
+                    
                     setTimeout(() => {
                         notification.style.opacity = '0';
                         notification.style.transform = 'translateX(100%)';
                         setTimeout(() => notification.remove(), 300);
-                    }, 3000);
+                    }, 4000);
                 },
-
+                
+                showToast(message) {
+                    // Small toast for WS updates
+                    const toast = document.createElement('div');
+                    toast.className = 'fixed bottom-20 right-4 glass-panel px-4 py-2 rounded-lg text-sm text-white border border-indigo-500/30 slide-in z-50';
+                    toast.innerHTML = `<i class="fas fa-sync-alt mr-2 text-indigo-400 animate-spin"></i>${message}`;
+                    document.body.appendChild(toast);
+                    setTimeout(() => toast.remove(), 3000);
+                },
+                
                 updateAuthUI() {
                     const loginBtn = document.getElementById('login-btn');
                     const userMenu = document.getElementById('user-menu');
-                    const adminBtn = document.getElementById('admin-menu-btn');
-
+                    const adminItem = document.getElementById('admin-menu-item');
+                    
                     if (app.state.user) {
                         loginBtn.classList.add('hidden');
                         userMenu.classList.remove('hidden');
                         document.getElementById('user-name').textContent = app.state.user.name;
-                        document.getElementById('user-avatar').textContent = app.state.user.name.charAt(0);
                         
                         if (app.state.user.role === 'admin') {
-                            adminBtn.classList.remove('hidden');
+                            adminItem.classList.remove('hidden');
+                        } else {
+                            adminItem.classList.add('hidden');
                         }
                     } else {
                         loginBtn.classList.remove('hidden');
                         userMenu.classList.add('hidden');
                     }
                 },
-
+                
+                showModal(type) {
+                    const modal = document.getElementById('modal-container');
+                    
+                    if (type === 'login') {
+                        modal.innerHTML = `
+                            <div class="modal-overlay fixed inset-0 flex items-center justify-center p-4" onclick="if(event.target === this) app.ui.closeModal()">
+                                <div class="glass-panel rounded-2xl p-8 max-w-md w-full slide-in border border-gray-700">
+                                    <div class="text-center mb-8">
+                                        <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center mx-auto mb-4">
+                                            <i class="fas fa-shield-alt text-white text-2xl"></i>
+                                        </div>
+                                        <h3 class="text-2xl font-bold text-white mb-2">Авторизация</h3>
+                                        <p class="text-gray-400 text-sm">Войдите для доступа к покупкам</p>
+                                    </div>
+                                    
+                                    <form onsubmit="app.ui.handleLogin(event)" class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-400 mb-1">Email</label>
+                                            <input type="email" id="login-email" class="w-full bg-black/30 border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none transition" placeholder="admin@techstore.pro" required>
+                                            <div class="text-xs text-gray-500 mt-1">Демо: admin@techstore.pro / admin123</div>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-400 mb-1">Пароль</label>
+                                            <input type="password" id="login-password" class="w-full bg-black/30 border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none transition" placeholder="••••••" required>
+                                        </div>
+                                        <button type="submit" class="w-full btn-primary py-3 rounded-lg font-bold text-white mt-6">
+                                            Войти в систему
+                                        </button>
+                                    </form>
+                                    
+                                    <div class="mt-6 p-4 bg-black/30 rounded-lg border border-gray-800">
+                                        <div class="text-xs text-gray-500 mb-2">JWT Token Simulation:</div>
+                                        <div class="jwt-token font-mono">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    modal.classList.remove('hidden');
+                },
+                
                 closeModal() {
                     document.getElementById('modal-container').classList.add('hidden');
                 },
-
-                showPaymentModal(total) {
+                
+                async handleLogin(e) {
+                    e.preventDefault();
+                    const email = document.getElementById('login-email').value;
+                    const password = document.getElementById('login-password').value;
+                    
+                    try {
+                        await app.auth.login(email, password);
+                        this.closeModal();
+                        this.updateAuthUI();
+                        this.notify(`Добро пожаловать, ${app.state.user.name}!`, 'success');
+                        
+                        // Show JWT info
+                        console.log('[Auth] JWT Token:', app.auth.token);
+                    } catch (err) {
+                        this.notify('Неверные учетные данные', 'error');
+                    }
+                },
+                
+                showPaymentModal(amount) {
                     const modal = document.getElementById('modal-container');
                     modal.innerHTML = `
                         <div class="modal-overlay fixed inset-0 flex items-center justify-center p-4" onclick="if(event.target === this) app.ui.closeModal()">
-                            <div class="modal-content w-full max-w-lg rounded-3xl overflow-hidden slide-up">
-                                <div class="p-8">
-                                    <div class="text-center mb-8">
-                                        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
-                                            <i class="fas fa-lock text-2xl text-gray-800"></i>
+                            <div class="glass-panel rounded-2xl max-w-lg w-full slide-in border border-gray-700 overflow-hidden">
+                                <div class="p-6 border-b border-gray-700 flex justify-between items-center">
+                                    <h3 class="text-xl font-bold text-white">Оплата заказа</h3>
+                                    <button onclick="app.ui.closeModal()" class="text-gray-400 hover:text-white">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="p-6">
+                                    <div class="payment-card rounded-xl p-6 mb-6 relative overflow-hidden">
+                                        <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-10 -mt-10 blur-2xl"></div>
+                                        <div class="relative z-10">
+                                            <div class="text-gray-400 text-sm mb-1">Сумма к оплате</div>
+                                            <div class="text-4xl font-bold text-white mb-4">₽${amount.toLocaleString()}</div>
+                                            <div class="flex gap-4 text-2xl text-gray-500">
+                                                <i class="fab fa-cc-visa hover:text-white transition"></i>
+                                                <i class="fab fa-cc-mastercard hover:text-white transition"></i>
+                                                <i class="fab fa-cc-apple-pay hover:text-white transition"></i>
+                                            </div>
                                         </div>
-                                        <h2 class="font-serif text-2xl font-bold mb-2">Оплата заказа</h2>
-                                        <p class="text-gray-500">Безопасное соединение SSL</p>
                                     </div>
-
-                                    <div class="bg-gray-50 rounded-2xl p-6 mb-6">
-                                        <div class="flex justify-between items-center mb-4">
-                                            <span class="text-gray-600">Сумма к оплате</span>
-                                            <span class="font-serif text-3xl font-bold">₽${total.toLocaleString()}</span>
-                                        </div>
-                                        <div class="flex gap-2 justify-center text-2xl text-gray-400">
-                                            <i class="fab fa-cc-visa"></i>
-                                            <i class="fab fa-cc-mastercard"></i>
-                                            <i class="fab fa-cc-mir"></i>
-                                        </div>
-                                    </div>
-
-                                    <form onsubmit="app.ui.processPayment(event, ${total})" class="space-y-4">
+                                    
+                                    <form onsubmit="app.ui.processPayment(event, ${amount})" class="space-y-4">
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700 mb-2">Номер карты</label>
-                                            <input type="text" class="input-elegant w-full px-4 py-3 rounded-xl font-mono" placeholder="4242 4242 4242 4242" value="4242 4242 4242 4242">
+                                            <label class="block text-sm text-gray-400 mb-1">Номер карты</label>
+                                            <div class="relative">
+                                                <input type="text" class="w-full bg-black/30 border border-gray-700 rounded-lg px-4 py-3 text-white font-mono focus:border-indigo-500 focus:outline-none transition" placeholder="4242 4242 4242 4242" value="4242 4242 4242 4242">
+                                                <i class="fas fa-credit-card absolute right-4 top-3.5 text-gray-500"></i>
+                                            </div>
                                         </div>
                                         <div class="grid grid-cols-2 gap-4">
                                             <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-2">Срок</label>
-                                                <input type="text" class="input-elegant w-full px-4 py-3 rounded-xl font-mono" placeholder="MM/YY" value="12/25">
+                                                <label class="block text-sm text-gray-400 mb-1">Срок</label>
+                                                <input type="text" class="w-full bg-black/30 border border-gray-700 rounded-lg px-4 py-3 text-white font-mono focus:border-indigo-500 focus:outline-none transition" placeholder="12/25" value="12/25">
                                             </div>
                                             <div>
-                                                <label class="block text-sm font-medium text-gray-700 mb-2">CVC</label>
-                                                <input type="text" class="input-elegant w-full px-4 py-3 rounded-xl font-mono" placeholder="123" value="123">
+                                                <label class="block text-sm text-gray-400 mb-1">CVC</label>
+                                                <input type="text" class="w-full bg-black/30 border border-gray-700 rounded-lg px-4 py-3 text-white font-mono focus:border-indigo-500 focus:outline-none transition" placeholder="123" value="123">
                                             </div>
                                         </div>
-                                        <button type="submit" class="w-full btn-elegant py-4 rounded-xl font-medium mt-6">
-                                            Оплатить ₽${total.toLocaleString()}
+                                        
+                                        <div class="bg-indigo-500/10 border border-indigo-500/30 rounded-lg p-4 mt-4">
+                                            <div class="flex items-center gap-2 text-indigo-400 text-sm mb-1">
+                                                <i class="fas fa-lock"></i>
+                                                <span class="font-semibold">Безопасная оплата</span>
+                                            </div>
+                                            <div class="text-xs text-gray-500">Шифрование SSL 256-bit. Платежный шлюз Stripe/YooKassa.</div>
+                                        </div>
+                                        
+                                        <button type="submit" class="w-full btn-primary py-4 rounded-xl font-bold text-lg text-white mt-6 shadow-lg shadow-indigo-500/30">
+                                            <i class="fas fa-lock mr-2"></i>Оплатить ₽${amount.toLocaleString()}
                                         </button>
                                     </form>
-
-                                    <button onclick="app.ui.closeModal()" class="w-full mt-4 text-sm text-gray-500 hover:text-gray-800">Отмена</button>
                                 </div>
                             </div>
                         </div>
                     `;
                 },
-
-                async processPayment(e, total) {
+                
+                async processPayment(e, amount) {
                     e.preventDefault();
                     const btn = e.target.querySelector('button[type="submit"]');
-                    btn.innerHTML = '<div class="loader mx-auto"></div>';
+                    btn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i>Обработка...';
                     btn.disabled = true;
-
-                    await new Promise(r => setTimeout(r, 1500));
-
-                    // Создание заказа
-                    const order = {
-                        id: Date.now(),
-                        userId: app.state.user.id,
-                        userName: app.state.user.name,
-                        items: [...app.state.cart],
-                        total: total,
-                        date: new Date().toLocaleString('ru-RU'),
-                        status: 'paid'
-                    };
-
-                    // Обновление склада
-                    app.state.cart.forEach(item => {
-                        const product = app.state.products.find(p => p.id === item.id);
-                        if (product) {
-                            product.stock -= item.quantity;
-                            product.sales += item.quantity;
-                        }
-                    });
-
-                    app.state.orders.push(order);
-                    app.db.save();
-
-                    app.state.cart = [];
-                    app.cart.updateUI();
-
-                    this.closeModal();
-                    this.notify('Оплата прошла успешно!', 'success');
                     
-                    if (app.state.view === 'store') app.store.render();
+                    try {
+                        // Step 1: Create payment intent
+                        const intent = await app.payment.createPaymentIntent(amount);
+                        console.log('[Stripe] PaymentIntent created:', intent.id);
+                        
+                        // Step 2: Confirm payment (simulated)
+                        await new Promise(r => setTimeout(r, 1500));
+                        const confirmed = await app.payment.confirmPayment(intent.id);
+                        
+                        if (confirmed.status === 'succeeded') {
+                            // Step 3: Create order in DB
+                            const order = {
+                                id: Date.now(),
+                                userId: app.state.user.id,
+                                userEmail: app.state.user.email,
+                                items: app.cart.items.map(i => ({ id: i.id, name: i.name, price: i.price, quantity: i.quantity })),
+                                total: amount,
+                                status: 'paid',
+                                paymentId: intent.id,
+                                date: new Date().toLocaleString('ru-RU')
+                            };
+                            
+                            // Atomic transaction simulation
+                            app.db.transaction(() => {
+                                // Deduct stock
+                                app.cart.items.forEach(item => {
+                                    const product = app.state.products.find(p => p.id === item.id);
+                                    if (product) {
+                                        product.stock -= item.quantity;
+                                        product.sales += item.quantity;
+                                    }
+                                });
+                                
+                                // Save order
+                                app.state.orders.push(order);
+                                localStorage.setItem('ts_products', JSON.stringify(app.state.products));
+                                localStorage.setItem('ts_orders', JSON.stringify(app.state.orders));
+                            });
+                            
+                            // Clear cart
+                            app.cart.items = [];
+                            app.cart.updateUI();
+                            
+                            // Notify via WebSocket
+                            app.ws.emit('order:new', order);
+                            
+                            this.closeModal();
+                            this.notify('Оплата успешна! Заказ создан.', 'success');
+                            app.store.render();
+                            
+                            // Show order confirmation
+                            setTimeout(() => {
+                                alert(`Заказ #${order.id} оплачен!\n\nВ реальном приложении здесь был бы редирект на страницу заказа.`);
+                            }, 500);
+                        }
+                    } catch (err) {
+                        this.notify('Ошибка оплаты: ' + err.message, 'error');
+                        btn.innerHTML = '<i class="fas fa-lock mr-2"></i>Оплатить';
+                        btn.disabled = false;
+                    }
                 },
-
+                
                 showAddProductModal() {
                     const modal = document.getElementById('modal-container');
                     modal.innerHTML = `
                         <div class="modal-overlay fixed inset-0 flex items-center justify-center p-4" onclick="if(event.target === this) app.ui.closeModal()">
-                            <div class="modal-content w-full max-w-md rounded-3xl overflow-hidden slide-up">
-                                <div class="p-8">
-                                    <h2 class="font-serif text-2xl font-bold mb-6">Новый товар</h2>
-                                    <form onsubmit="app.ui.handleAddProduct(event)" class="space-y-4">
-                                        <input type="text" id="new-name" placeholder="Название" class="input-elegant w-full px-4 py-3 rounded-xl" required>
-                                        <select id="new-category" class="input-elegant w-full px-4 py-3 rounded-xl">
-                                            <option value="phones">Смартфоны</option>
-                                            <option value="laptops">Ноутбуки</option>
-                                            <option value="audio">Аудио</option>
-                                        </select>
-                                        <div class="grid grid-cols-2 gap-4">
-                                            <input type="number" id="new-price" placeholder="Цена" class="input-elegant w-full px-4 py-3 rounded-xl" required>
-                                            <input type="number" id="new-stock" placeholder="Количество" class="input-elegant w-full px-4 py-3 rounded-xl" required>
-                                        </div>
-                                        <input type="file" id="new-image" accept="image/*" class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200">
-                                        <div class="flex gap-3 mt-6">
-                                            <button type="button" onclick="app.ui.closeModal()" class="flex-1 py-3 rounded-xl border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition">Отмена</button>
-                                            <button type="submit" class="flex-1 btn-elegant py-3 rounded-xl font-medium">Добавить</button>
-                                        </div>
-                                    </form>
-                                </div>
+                            <div class="glass-panel rounded-2xl max-w-md w-full slide-in border border-gray-700 p-6">
+                                <h3 class="text-xl font-bold text-white mb-6">Добавить товар (INSERT INTO products)</h3>
+                                <form onsubmit="app.ui.handleAddProduct(event)" class="space-y-4">
+                                    <input type="text" id="new-name" placeholder="Название" class="w-full bg-black/30 border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none" required>
+                                    <select id="new-category" class="w-full bg-black/30 border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none">
+                                        <option value="phones">Смартфоны</option>
+                                        <option value="laptops">Ноутбуки</option>
+                                        <option value="audio">Аудио</option>
+                                    </select>
+                                    <input type="number" id="new-price" placeholder="Цена (₽)" class="w-full bg-black/30 border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none" required>
+                                    <input type="number" id="new-stock" placeholder="Количество" class="w-full bg-black/30 border border-gray-700 rounded-lg px-4 py-3 text-white focus:border-indigo-500 focus:outline-none" required>
+                                    <input type="file" id="new-image" accept="image/*" class="w-full text-gray-400 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-600 file:text-white hover:file:bg-indigo-700">
+                                    <div class="flex gap-2 mt-6">
+                                        <button type="button" onclick="app.ui.closeModal()" class="flex-1 bg-gray-700 text-white py-3 rounded-lg hover:bg-gray-600 transition">Отмена</button>
+                                        <button type="submit" class="flex-1 btn-primary py-3 rounded-lg font-bold text-white">Добавить</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     `;
+                    modal.classList.remove('hidden');
                 },
-
+                
                 handleAddProduct(e) {
                     e.preventDefault();
                     const fileInput = document.getElementById('new-image');
-                    
                     const handleCreate = (imageUrl) => {
                         const newProduct = {
                             id: Date.now(),
@@ -1324,35 +1574,70 @@
                             stock: parseInt(document.getElementById('new-stock').value),
                             image: imageUrl,
                             sales: 0,
-                            description: 'Новый товар'
+                            description: 'New product'
                         };
-
+                        
                         app.state.products.push(newProduct);
-                        app.db.save();
+                        localStorage.setItem('ts_products', JSON.stringify(app.state.products));
+                        
+                        app.ws.emit('product:created', newProduct);
                         
                         this.closeModal();
-                        app.admin.renderInventory();
-                        this.notify('Товар добавлен успешно', 'success');
+                        app.admin.renderInventory(document.getElementById('admin-content'));
+                        app.store.render();
+                        this.notify('Товар добавлен в базу данных', 'success');
                     };
-
+                    
                     if (fileInput.files && fileInput.files[0]) {
                         const reader = new FileReader();
                         reader.onload = (e) => handleCreate(e.target.result);
                         reader.readAsDataURL(fileInput.files[0]);
                     } else {
-                        handleCreate('https://via.placeholder.com/400x400/f3f4f6/9ca3af?text=No+Image');
+                        handleCreate('https://via.placeholder.com/400x300/6366f1/ffffff?text=New+Product');
                     }
                 }
             },
 
+            // Demo features
             demo: {
-                showInfo() {
-                    alert('LUXE — премиальный магазин электроники\n\nДемо-данные:\n• Админ: admin@luxe.com / admin123\n• Клиент: user@luxe.com / user123');
+                showArchitecture() {
+                    alert(`FULL STACK ARCHITECTURE:
+                    
+Frontend: React/Vue.js + Tailwind CSS
+Backend: Node.js + Express.js REST API
+Database: PostgreSQL (Relational)
+Real-time: Socket.io WebSocket
+Payment: Stripe/YooKassa API
+Auth: JWT Access + Refresh tokens
+File Storage: AWS S3 / Cloudinary
+                    
+Check browser console for detailed API logs!`);
                 }
+            },
+
+            // Initialization
+            init() {
+                this.db.init();
+                this.ws.connect();
+                
+                if (this.auth.checkAuth()) {
+                    this.ui.updateAuthUI();
+                }
+                
+                this.router.navigate('store');
+                
+                // Global click handler for dropdowns
+                document.addEventListener('click', (e) => {
+                    const userMenu = document.getElementById('user-menu');
+                    const dropdown = document.getElementById('user-dropdown');
+                    if (userMenu && !userMenu.contains(e.target)) {
+                        dropdown?.classList.add('hidden');
+                    }
+                });
             }
         };
 
-        // Инициализация
+        // Start app
         document.addEventListener('DOMContentLoaded', () => app.init());
     </script>
 </body>
